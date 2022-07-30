@@ -28,7 +28,7 @@ The USP of our project is to play a similar game, but instead of focussing on th
 
 ## How we built it 🔧
 
-Our solution, was built with <3 using Flutter, Python, Machine learning Algorithms and Voice Recognition. Special Mention to Git and GitHub for providing us with the tools we needed to collaborate in real time whilst working from different regions. 
+Our solution, was built with ❤️ using Flutter, Python, Machine learning Algorithms and Voice Recognition. Special Mention to Git and GitHub for providing us with the tools we needed to collaborate in real time whilst working from different regions. 
 
 ## Tech Stack 🔨
 1. Flutter
