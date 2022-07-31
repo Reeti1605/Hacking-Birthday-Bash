@@ -18,15 +18,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            for (TextEditingController c in _controllers) {
-              print(c.text);
-            }
-            Navigator.of(context).pushNamed(RecordScreen.routeName);
-          },
-          child: const Text('Sing!'),
-        ),
         body: Center(
           child: ListView(
             padding: const EdgeInsets.all(20),
@@ -34,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Enter number of players: ",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -62,6 +53,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 30,
+              ),
               const Text(
                 "Player names:",
                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -86,6 +80,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
                 itemCount: numberOfPlayers,
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.teal, padding: EdgeInsets.all(10)),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(RecordScreen.routeName);
+                },
+                child: const Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text("Go!"),
+                ),
               )
             ],
           ),

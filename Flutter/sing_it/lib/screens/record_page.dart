@@ -1,10 +1,21 @@
 import 'dart:ffi';
+import 'dart:io';
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:path/path.dart' as path;
+import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'dart:async';
 import 'results_page.dart';
 import 'dart:math';
+import 'package:record/record.dart';
 
 class RecordScreen extends StatefulWidget {
   static const routeName = '/recordScreen';
@@ -43,24 +54,58 @@ class _RecordScreenState extends State<RecordScreen> {
     });
     Future.delayed(const Duration(milliseconds: 5000), () {
       setState(() {
-        displayMood=moods[moodIndex];
+        displayMood = moods[moodIndex];
       });
     });
   }
+
+  FlutterSoundRecorder _myRecorder = FlutterSoundRecorder();
+  final record = Record();
+  String _recorderTxt = "00:00:00";
+  bool isRecording = false;
+  String? path = '';
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed(ResultScreen.routeName);
-          },
-          child: Text('Show results!'),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            FloatingActionButton(
+              onPressed: () async {
+                //Navigator.of(context).pushNamed(ResultScreen.routeName);
+                if (!isRecording) {
+                  if (await record.hasPermission()) {
+                    // Start recording
+                    await record.start(
+                      encoder: AudioEncoder.wav, // by default
+                      bitRate: 128000, // by default
+                    );
+                  }
+                } else {
+                  setState(() async {
+                    path = await record.stop();
+                    print("Path iss -- $path");
+                  });
+                }
+              },
+              child: Icon(isRecording ? Icons.stop : Icons.mic_sharp),
+            ),
+          ],
         ),
         body: ListView(
           padding: EdgeInsets.all(20),
           children: [
+            const Text(
+              'Tap to spin!',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey, fontSize: 12),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             Container(
               height: 300,
               child: GestureDetector(
@@ -87,15 +132,27 @@ class _RecordScreenState extends State<RecordScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Mood selected: ",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Text(displayMood)
               ],
+            ),
+            Divider(
+              height: 20,
+              color: Colors.grey,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              _recorderTxt,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 50, fontWeight: FontWeight.w500),
             )
           ],
         ),
