@@ -1,30 +1,27 @@
-from msilib.schema import File
-from flask import Flask, render_template, request
-from werkzeug.utils import secure_filename
-import os
+import numpy as np
+from flask import flask, request, jsonify, render_template
 import pickle
+moodsings= flask(__name__)
 
-app = Flask('__name__')
-app.config['SECRET_KEY']='password'
-app.config['UPLOAD_FOLDER']='static/files'
-model = pickle.load(open('../model.pkl', 'rb'))
+#load pickle
 
-
-@app.route('/',methods=['GET','POST'])
-def home():
-    return 'Server is running'
-@app.route('/upload',methods=['GET','POST'])
-def upload():
-    if request.method == 'POST':
-        file=request.files['file']
-        print(file)
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        prediction = model.predict(file.read());
-        return prediction
-    else:
-        return 'Get request to /upload'
+model = pickle.load(open("model.pkl", "rb"))
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+@moodsings.route("/")
+def Home():
+    return render_template("index.html")
+
+
+@moodsings.route("/predict", method=["POST"])
+
+
+def predict():
+    float_features = [float(x) for x in request.form.values()]
+    features = [np.array(float_features)]
+    prediction = moodsings.predict(features)
+
+    return render_template("Index.html", prediction_text = "The mood is ".format(prediction))
+
+if __name__== "__main__":
+    moodsings.run(debug=True)
