@@ -11,7 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int numberOfPlayers = 2;
+  int numberOfPlayers = 1;
   List<TextEditingController> _controllers = [];
 
   @override
@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           print("Players = $numberOfPlayers");
                         });
                       },
-                      items: <int>[2, 3, 4]
+                      items: <int>[1, 2, 3, 4]
                           .map<DropdownMenuItem<int>>(
                             (value) => DropdownMenuItem<int>(
                               value: value,

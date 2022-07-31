@@ -1,16 +1,10 @@
 import 'dart:ffi';
 import 'dart:io';
-
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_sound/flutter_sound.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:path/path.dart' as path;
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'dart:async';
 import 'results_page.dart';
@@ -28,6 +22,8 @@ class _RecordScreenState extends State<RecordScreen> {
   StreamController<int> controller = StreamController<int>();
 
   //int moodIndex = 0;
+  int score = 0;
+  bool showLeaderBoard = false;
 
   @override
   void dispose() {
@@ -64,6 +60,7 @@ class _RecordScreenState extends State<RecordScreen> {
   String _recorderTxt = "00:00:00";
   bool isRecording = false;
   String? path = '';
+  String displayMessage = 'Tap the button and sing!';
 
   @override
   Widget build(BuildContext context) {
@@ -77,18 +74,33 @@ class _RecordScreenState extends State<RecordScreen> {
               onPressed: () async {
                 //Navigator.of(context).pushNamed(ResultScreen.routeName);
                 if (!isRecording) {
+                  setState(() {
+                    isRecording = !isRecording;
+                    displayMessage = 'Listening...';
+                  });
                   if (await record.hasPermission()) {
                     // Start recording
                     await record.start(
                       encoder: AudioEncoder.wav, // by default
                       bitRate: 128000, // by default
                     );
+                    print("RECORDING STARTED");
                   }
                 } else {
-                  setState(() async {
-                    path = await record.stop();
-                    print("Path iss -- $path");
+                  setState(() {
+                    isRecording = !isRecording;
+                    displayMessage = 'Stopped';
+                    Future.delayed(Duration(seconds: 2), () {
+                      setState(() {
+                        score = Random().nextInt(10);
+                        displayMessage = "Score: $score / 10";
+                        showLeaderBoard = true;
+                      });
+                    });
                   });
+                  path = await record.stop();
+                  print("RECORDING STOPPED");
+                  print("Path iss -- $path");
                 }
               },
               child: Icon(isRecording ? Icons.stop : Icons.mic_sharp),
@@ -126,7 +138,7 @@ class _RecordScreenState extends State<RecordScreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Row(
@@ -142,18 +154,31 @@ class _RecordScreenState extends State<RecordScreen> {
                 Text(displayMood)
               ],
             ),
-            Divider(
+            const Divider(
               height: 20,
               color: Colors.grey,
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            displayMessage == 'Stopped'
+                ? Center(child: CircularProgressIndicator())
+                : Text(
+                    displayMessage,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.w500),
+                  ),
             SizedBox(
               height: 20,
             ),
-            Text(
-              _recorderTxt,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 50, fontWeight: FontWeight.w500),
-            )
+            showLeaderBoard
+                ? ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: Colors.grey),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(ResultScreen.routeName);
+                    },
+                    child: Text('Show leaderboard'))
+                : Container()
           ],
         ),
       ),

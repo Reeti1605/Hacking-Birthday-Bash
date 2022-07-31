@@ -21,7 +21,7 @@ class _ResultScreenState extends State<ResultScreen> {
         body: ListView.builder(
             shrinkWrap: true,
             padding: EdgeInsets.all(20),
-            itemCount: 30,
+            itemCount: 2,
             itemBuilder: (ctx, index) {
               return index == 0
                   ? const Padding(
@@ -39,8 +39,11 @@ class _ResultScreenState extends State<ResultScreen> {
                         shape: BeveledRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
                         leading: Text("${index}"),
-                        title: Text("P${index} name"),
-                        trailing: Icon(TablerIcons.medal),
+                        title: Text("Eshaan"),
+                        trailing: Icon(
+                          TablerIcons.medal,
+                          color: Colors.yellowAccent,
+                        ),
                       ),
                     );
             }),
