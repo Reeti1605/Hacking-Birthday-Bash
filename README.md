@@ -37,7 +37,7 @@ Our solution, was built with ❤️ using Flutter, Python, Machine learning Algo
 4. Machine Learning
 5. Voice Recognition
 6. Git
-7. GitHub
+7. Github
 
 ## Challenges we ran into 🏃‍♂️
 
@@ -63,6 +63,8 @@ Only developers.
 |  Gyanesh Samanta   | [GitHub](https://www.github.com/gyanesh-samanta-123) |
 |  Eshaan Bhardwaj   | [GitHub](https://github.com/Eshaan-B) |
 |  Adarsh Sailendra   | [GitHub](https://github.com/Adarsh-gif-crypt) |
+|  Reeti Jha           | [GitHub](https://github.com/Reeti1605) |
+
 
 
 
