@@ -22,10 +22,6 @@ For example: If the last song ended with the sound "Na" then your song should st
 
 The USP of our project is to play a similar game, but instead of focussing on the syllable of the song, we focus on the mood that our app recommends the user to sing the song about. 
 
-
-## How the App Looks 🤜🔥🤛
-
-
 ## How we built it 🔧
 
 Our solution, was built with ❤️ using Flutter, Python, Machine learning Algorithms and Voice Recognition. Special Mention to Git and GitHub for providing us with the tools we needed to collaborate in real time whilst working from different regions. 
